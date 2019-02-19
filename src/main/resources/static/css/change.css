@@ -1,0 +1,79 @@
+body{
+	margin:0;
+	}
+.warp{
+	margin:0;
+	padding:0;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-repeat:no-repeat;
+	background-attachment: fixed;
+	background-image:url("/images/bg-p.jpg");/*背景图片*/
+	}
+.warp-main
+	{
+		position:relative;
+	}
+.register
+	{
+	left:50%;
+	top:50%;
+	margin-top:130px;
+	margin-left:-100px;
+	position:absolute;
+	width:280px;
+	height:430px;
+	border-radius:15px;
+	background-color: #FFF;
+	opacity:0.4;
+	overflow:hidden;
+	}
+.register-info
+	{
+		position:absolute;
+		left:8%;
+		top:5%;
+	}
+/*.imput 
+	{
+		width:175px;
+		height:25px;
+		border-radius:5px;
+	}*/
+.input-user
+	{
+		width:150px;
+		height:20px;
+		margin-top:20px;
+		border-radius:5px;
+	}
+.input-pwd
+	{
+		width:150px;
+		height:20px;
+		margin-top:20px;
+		border-radius:5px;
+	}
+.input-npwd
+	{
+		width:150px;
+		height:20px;
+		margin-top:20px;
+		border-radius:5px;
+	}
+.input-email
+	{
+		width:150px;
+		height:20px;
+		margin-top:20px;
+		border-radius:5px;
+	}
+.input-change
+	{
+		width:75px;
+		height:30px;
+		border-radius:5px;
+		margin-left:75px;
+		margin-top:40px;
+	}
