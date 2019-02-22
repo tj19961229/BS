@@ -1,16 +1,19 @@
 package com.example.demo.Controllers;
 
-import com.example.demo.entity.Role_name;
-import com.example.demo.entity.Sysuser;
-import com.example.demo.entity.datatest;
-import com.example.demo.entity.login;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.TypeReference;
+import com.example.demo.entity.*;
 import com.example.demo.service.impl.MiniuserService;
 import com.example.demo.service.impl.SysuserService;
 import com.example.demo.service.impl.Userservice;
 import com.example.demo.service.impl.loginService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonArrayFormatVisitor;
-import net.minidev.json.JSONArray;
+import com.fasterxml.jackson.databind.util.JSONPObject;
 import net.minidev.json.JSONObject;
+import net.minidev.json.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -43,6 +46,9 @@ public class HelloController {
     private SysuserService sysuserService;
     @Autowired
     private MiniuserService miniuserService;
+//    @Autowired
+//    private Jsonchange jsonchange;
+
 
     private static  String path="./src/main/resources/static/table/";
     @RequestMapping(value="/adduser_cx")
@@ -56,6 +62,7 @@ public class HelloController {
     public   Object testdata(HttpServletRequest request){
         List<Sysuser> data=sysuserService.Users_select();
         datatest jsondata=new datatest();
+        HttpSession session=request.getSession();
 
         System.out.println(request.getParameter("method"));
         if(request.getParameter("method").equals("GetDepartmentEmployees"))
@@ -68,11 +75,38 @@ public class HelloController {
             }
             jsondata.setTotal(1);
             jsondata.setData(miniuserService.mini_select_bumen(request.getParameter("dept_id")));
+            session.setAttribute("dept_id",request.getParameter("dept_id"));
 
         }
         else if(request.getParameter("method").equals("SaveEmployees")){
+            User_miniui user_miniui=new User_miniui();
+            JSONArray jsonArray = JSON.parseArray(request.getParameter("data"));
+            String TT="";
+            //JSONArray jsonArray1 = JSONArray.parseArray(JSON_ARRAY_STR);//因为JSONArray继承了JSON，所以这样也是可以的
+            //遍历方式1
+            for (int i = 0; i < jsonArray.size(); i++){
+
+                com.alibaba.fastjson.JSONObject jsonObject=jsonArray.getJSONObject(i);
+                TT=jsonObject.getString("_state");
+
+                if(jsonObject.containsKey("id")) user_miniui.setId(jsonObject.getInteger("id"));
+                if(jsonObject.containsKey("age"))user_miniui.setAge(jsonObject.getInteger("age"));
+                if(jsonObject.containsKey("name"))user_miniui.setName(jsonObject.getString("name"));
+                if(jsonObject.containsKey("loginname"))user_miniui.setLoginname(jsonObject.getString("loginname"));
+                if(jsonObject.containsKey("gender"))user_miniui.setGender(jsonObject.getInteger("gender"));
+                if(jsonObject.containsKey("birthday"))user_miniui.setBirthday(jsonObject.getString("birthday"));
+            }
+
+            user_miniui.setBumen(session.getAttribute("dept_id").toString());
+            if(TT.equals("added")){
+                miniuserService.mini_add(user_miniui);
+            }else{
+                miniuserService.mini_update(user_miniui);
+            }
             System.out.println(request.getParameter("data"));
-            String jjjj=request.getParameter("data");
+
+//            System.out.println(user_miniui.getAge());
+//            String jjjj=request.getParameter("data");
 //            JSONArray json=new JSONObject(jjjj);
         }
         return jsondata;

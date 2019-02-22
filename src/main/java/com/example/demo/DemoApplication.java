@@ -1,6 +1,9 @@
 package com.example.demo;
 
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -9,9 +12,11 @@ import org.springframework.boot.SpringApplication;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.converter.HttpMessageConverter;
 
 
 @SpringBootApplication
@@ -20,6 +25,23 @@ import org.springframework.context.annotation.Bean;
 //@ServletComponentScan(basePackages = "com.example.demo")
 public class DemoApplication {
 
+    @Bean
+
+    public HttpMessageConverters fastJsonHttpMessageConverters() {
+
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
+
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
+
+        fastConverter.setFastJsonConfig(fastJsonConfig);
+
+        HttpMessageConverter<?> converter = fastConverter;
+
+        return new HttpMessageConverters(converter);
+
+    }
 
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);

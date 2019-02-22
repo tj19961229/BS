@@ -10,7 +10,20 @@ import java.util.List;
 public class MiniuserService {
     @Autowired
     private MiniuserMapper miniuserMapper;
+
     public List<User_miniui> mini_select_bumen(String value){
         return miniuserMapper.mini_select_bumen(value);
+    }
+
+    public String mini_add(User_miniui user_miniui){
+        if(miniuserMapper.mini_add(user_miniui)!=0)
+            return "success";
+        else return  "error";
+    }
+
+    public String mini_update(User_miniui user_miniui){
+        if(miniuserMapper.mini_update(user_miniui)!=0)
+            return "success";
+        else return  "error";
     }
 }
