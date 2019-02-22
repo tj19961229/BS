@@ -191,7 +191,9 @@ public class HelloController {
     @ResponseBody
     private String loginout()
     {
-        return "超时了兄弟";
+        return "超时了啊兄弟";
+
+
 
 
     }
